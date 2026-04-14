@@ -115,8 +115,8 @@ export default function AlarmsPage() {
 
       {/* Add Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-[100] grid place-items-center p-6 bg-black/60 backdrop-blur-sm overflow-y-auto">
-          <div className="w-full max-w-xl bg-surface-container-highest p-8 rounded-xl border border-primary/20 shadow-2xl animate-in fade-in zoom-in duration-300 my-auto">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm">
+          <div className="w-full max-w-xl bg-surface-container-highest p-8 rounded-xl border border-primary/20 shadow-2xl animate-in fade-in zoom-in duration-300">
             <div className="flex items-center justify-between mb-8">
               <h2 className="font-headline text-xl font-bold text-primary">Setup New Alarm</h2>
               <button onClick={() => setShowAddModal(false)}>
