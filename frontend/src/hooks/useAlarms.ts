@@ -45,5 +45,14 @@ export function useAlarms() {
     return () => clearInterval(interval);
   }, [alarms, triggeredAlarm]);
 
-  return { alarms, toggleAlarm, triggeredAlarm, setTriggeredAlarm, reload: loadAlarms };
+  const deleteAlarm = async (id: number) => {
+    try {
+      await apiService.deleteAlarm(id);
+      setAlarms(alarms.filter(a => a.id !== id));
+    } catch (err) {
+      console.error("Failed to delete alarm", err);
+    }
+  };
+
+  return { alarms, toggleAlarm, deleteAlarm, triggeredAlarm, setTriggeredAlarm, reload: loadAlarms };
 }

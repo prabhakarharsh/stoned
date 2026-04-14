@@ -44,5 +44,13 @@ export const apiService = {
       body: formData
     });
     return res.json();
+  },
+
+  async deleteAlarm(id: number | string) {
+    const res = await fetch(`${API_URL}/alarms/${id}`, {
+      method: 'DELETE',
+      headers: getHeaders()
+    });
+    return res.json();
   }
 };

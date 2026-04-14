@@ -82,6 +82,19 @@ app.post('/api/alarms', async (req, res) => {
   res.json(data[0]);
 });
 
+// Delete alarm
+app.delete('/api/alarms/:id', async (req, res) => {
+  const { id } = req.params;
+  
+  const { error } = await supabase
+    .from('alarms')
+    .delete()
+    .eq('id', id);
+
+  if (error) return res.status(500).json(error);
+  res.json({ success: true });
+});
+
 // Upload ringtone
 app.post('/api/upload-ringtone', upload.single('ringtone'), (req, res) => {
   res.json({ 

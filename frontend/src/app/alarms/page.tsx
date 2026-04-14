@@ -5,7 +5,7 @@ import { useState, useRef } from "react";
 import { apiService } from "@/services/apiService";
 
 export default function AlarmsPage() {
-  const { alarms, toggleAlarm, triggeredAlarm, setTriggeredAlarm, reload } = useAlarms();
+  const { alarms, toggleAlarm, deleteAlarm, triggeredAlarm, setTriggeredAlarm, reload } = useAlarms();
   const [showAddModal, setShowAddModal] = useState(false);
   const [customRingtone, setCustomRingtone] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -47,13 +47,22 @@ export default function AlarmsPage() {
                 </div>
               </div>
               
-              <div 
-                onClick={() => toggleAlarm(alarm.id)}
-                className="relative inline-flex items-center cursor-pointer"
-              >
-                <div className={`w-14 h-8 rounded-full transition-colors ${alarm.active ? 'bg-primary' : 'bg-surface-container-highest'}`}>
-                  <div className={`absolute top-1 left-1 bg-white rounded-full h-6 w-6 transition-transform ${alarm.active ? 'translate-x-6' : ''}`}></div>
+              <div className="flex items-center gap-4">
+                <div 
+                  onClick={() => toggleAlarm(alarm.id)}
+                  className="relative inline-flex items-center cursor-pointer"
+                >
+                  <div className={`w-14 h-8 rounded-full transition-colors ${alarm.active ? 'bg-primary' : 'bg-surface-container-highest'}`}>
+                    <div className={`absolute top-1 left-1 bg-white rounded-full h-6 w-6 transition-transform ${alarm.active ? 'translate-x-6' : ''}`}></div>
+                  </div>
                 </div>
+                <button 
+                  onClick={() => deleteAlarm(alarm.id)}
+                  className="flex items-center justify-center p-2 rounded-full hover:bg-error/10 text-on-surface-variant hover:text-error transition-colors"
+                  title="Delete Alarm"
+                >
+                  <span className="material-symbols-outlined text-xl">delete</span>
+                </button>
               </div>
             </div>
 
