@@ -7,9 +7,22 @@ import { apiService } from "@/services/apiService";
 export default function AlarmsPage() {
   const { alarms, toggleAlarm, deleteAlarm, triggeredAlarm, setTriggeredAlarm, reload } = useAlarms();
   const [showAddModal, setShowAddModal] = useState(false);
-  const [customRingtone, setCustomRingtone] = useState<string | null>(null);
+  const [selectedRingtone, setSelectedRingtone] = useState<string>("Ocean");
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Helper function for UI icons
+  const getIconForRingtone = (rt: string) => {
+    switch (rt) {
+      case "Ocean": return "waves";
+      case "Rising": return "light_mode";
+      case "Forest": return "forest";
+      case "Bass": return "graphic_eq";
+      case "Zenith": return "rocket_launch";
+      case "Electric": return "bolt";
+      default: return "music_note";
+    }
+  };
 
   return (
     <main className="max-w-5xl mx-auto px-6 pt-8 pb-32">
@@ -116,7 +129,7 @@ export default function AlarmsPage() {
       {/* Add Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-xl bg-surface-container-highest p-8 rounded-xl border border-primary/20 shadow-2xl animate-in fade-in zoom-in duration-300">
+          <div className="w-full max-w-xl max-h-[90vh] overflow-y-auto bg-surface-container-highest p-8 rounded-xl border border-primary/20 shadow-2xl animate-in fade-in zoom-in duration-300">
             <div className="flex items-center justify-between mb-8">
               <h2 className="font-headline text-xl font-bold text-primary">Setup New Alarm</h2>
               <button onClick={() => setShowAddModal(false)}>
@@ -133,12 +146,12 @@ export default function AlarmsPage() {
                 label: formData.get('label') || 'New Alarm',
                 active: true,
                 days: ["M", "T", "W", "T", "F"],
-                ringtone: customRingtone || "Default",
+                ringtone: selectedRingtone,
               };
               await apiService.saveAlarm(alarm);
               reload();
               setShowAddModal(false);
-              setCustomRingtone(null);
+              setSelectedRingtone("Ocean");
             }}>
               <input 
                 type="file" 
@@ -186,30 +199,17 @@ export default function AlarmsPage() {
                 <div className="space-y-3">
                   <label className="text-xs font-headline uppercase tracking-widest text-on-surface-variant font-bold">Default Ringtones</label>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    <button type="button" className="flex items-center justify-center gap-2 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20 hover:border-primary/50 transition-colors">
-                      <span className="material-symbols-outlined text-sm">waves</span>
-                      <span className="text-xs font-label">Ocean</span>
-                    </button>
-                    <button type="button" className="flex items-center justify-center gap-2 p-3 rounded-lg bg-secondary-container text-on-secondary-container border border-secondary/30">
-                      <span className="material-symbols-outlined text-sm">light_mode</span>
-                      <span className="text-xs font-label">Rising</span>
-                    </button>
-                    <button type="button" className="flex items-center justify-center gap-2 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20 hover:border-primary/50 transition-colors">
-                      <span className="material-symbols-outlined text-sm">forest</span>
-                      <span className="text-xs font-label">Forest</span>
-                    </button>
-                    <button type="button" className="flex items-center justify-center gap-2 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20 hover:border-primary/50 transition-colors">
-                      <span className="material-symbols-outlined text-sm">graphic_eq</span>
-                      <span className="text-xs font-label">Bass</span>
-                    </button>
-                    <button type="button" className="flex items-center justify-center gap-2 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20 hover:border-primary/50 transition-colors">
-                      <span className="material-symbols-outlined text-sm">rocket_launch</span>
-                      <span className="text-xs font-label">Zenith</span>
-                    </button>
-                    <button type="button" className="flex items-center justify-center gap-2 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20 hover:border-primary/50 transition-colors">
-                      <span className="material-symbols-outlined text-sm">bolt</span>
-                      <span className="text-xs font-label">Electric</span>
-                    </button>
+                    {["Ocean", "Rising", "Forest", "Bass", "Zenith", "Electric"].map((rt) => (
+                      <button 
+                        key={rt} 
+                        type="button" 
+                        onClick={() => setSelectedRingtone(rt)}
+                        className={`flex items-center justify-center gap-2 p-3 rounded-lg border transition-colors ${selectedRingtone === rt ? 'bg-secondary-container text-on-secondary-container border-secondary/30' : 'bg-surface-container-low border-outline-variant/20 hover:border-primary/50'}`}
+                      >
+                        <span className="material-symbols-outlined text-sm">{getIconForRingtone(rt)}</span>
+                        <span className="text-xs font-label">{rt}</span>
+                      </button>
+                    ))}
                   </div>
                 </div>
                 
@@ -217,13 +217,13 @@ export default function AlarmsPage() {
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={uploading}
-                  className={`w-full bg-surface-container-low border-2 border-dashed ${customRingtone ? 'border-primary/50 bg-primary/5' : 'border-outline-variant/30'} py-4 rounded-xl text-on-surface-variant flex flex-col items-center justify-center gap-2 hover:bg-surface-container-high transition-colors group px-4`}
+                  className={`w-full bg-surface-container-low border-2 border-dashed ${selectedRingtone.startsWith('/') ? 'border-primary/50 bg-primary/5' : 'border-outline-variant/30'} py-4 rounded-xl text-on-surface-variant flex flex-col items-center justify-center gap-2 hover:bg-surface-container-high transition-colors group px-4`}
                 >
                   <span className={`material-symbols-outlined ${uploading ? 'animate-spin' : 'text-primary group-hover:scale-110'} transition-transform`}>
-                    {uploading ? 'sync' : (customRingtone ? 'check_circle' : 'upload_file')}
+                    {uploading ? 'sync' : (selectedRingtone.startsWith('/') ? 'check_circle' : 'upload_file')}
                   </span>
                   <span className="text-sm font-label font-semibold">
-                    {uploading ? 'Uploading...' : (customRingtone ? `Ringtone: ${customRingtone.split('/').pop()}` : 'Attach Custom Ringtone')}
+                    {uploading ? 'Uploading...' : (selectedRingtone.startsWith('/') ? `Ringtone: ${selectedRingtone.split('/').pop()}` : 'Attach Custom Ringtone')}
                   </span>
                 </button>
               </div>
