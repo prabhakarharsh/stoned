@@ -165,7 +165,7 @@ export default function AlarmsPage() {
                     try {
                       const res = await apiService.uploadRingtone(file);
                       if (res.success) {
-                        setCustomRingtone(res.path);
+                        setSelectedRingtone(res.path);
                       }
                     } catch (err) {
                       console.error("Upload failed", err);
