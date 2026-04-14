@@ -172,7 +172,7 @@ export default function Dashboard() {
         ))}
 
         {/* Add New Card */}
-        <div className="md:col-span-5 flex flex-col items-center justify-center border-2 border-dashed border-outline-variant/20 rounded-xl hover:border-primary/40 hover:bg-primary/5 transition-all group cursor-pointer p-12">
+        <div onClick={() => alert("Custom World Clocks will be available in the next update!")} className="md:col-span-5 flex flex-col items-center justify-center border-2 border-dashed border-outline-variant/20 rounded-xl hover:border-primary/40 hover:bg-primary/5 transition-all group cursor-pointer p-12">
           <div className="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
             <span className="material-symbols-outlined text-on-surface-variant group-hover:text-primary">add</span>
           </div>

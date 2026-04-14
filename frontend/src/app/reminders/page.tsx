@@ -38,7 +38,7 @@ export default function RemindersPage() {
             <span className="text-on-surface-variant text-sm font-label">12 items analyzed from &quot;Project_Alpha.pdf&quot;</span>
           </div>
         </div>
-        <button className="flex items-center gap-2 bg-gradient-to-r from-primary to-primary-dim text-on-primary-fixed px-6 py-3 rounded-full font-bold hover:shadow-[0_0_20px_rgba(155,168,255,0.3)] transition-all active:scale-95">
+        <button onClick={() => alert("Schedule editing functionality is coming in a future update!")} className="flex items-center gap-2 bg-gradient-to-r from-primary to-primary-dim text-on-primary-fixed px-6 py-3 rounded-full font-bold hover:shadow-[0_0_20px_rgba(155,168,255,0.3)] transition-all active:scale-95">
           <span className="material-symbols-outlined">edit_calendar</span>
           Edit Schedule
         </button>
