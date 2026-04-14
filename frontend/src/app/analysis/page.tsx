@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { apiService } from "@/services/apiService";
 
 export default function AnalysisPage() {
   const [analyzing, setAnalyzing] = useState(false);
